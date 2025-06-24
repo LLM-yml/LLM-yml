@@ -1,0 +1,166 @@
+# LLM.yml Documentation for the LLM.yml Project
+library:
+  name: llm-yml
+  version: 1.0.0
+  purpose: Standardized documentation format for libraries optimized for AI assistants
+  key_value: Enables AI assistants to understand and use code libraries more effectively
+
+quick_usage:
+  - pattern: "Validate a single file"
+    code: |
+      npx llm-yml validate ./LLM.yml
+    when_to_use: "To check if your LLM.yml file follows the specification"
+  
+  - pattern: "Validate all files in directory"
+    code: |
+      npx llm-yml validate ./examples/
+    when_to_use: "To validate multiple LLM.yml files at once"
+  
+  - pattern: "Install globally and validate"
+    code: |
+      npm install -g llm-yml
+      llm-yml validate ./LLM.yml
+    when_to_use: "For frequent validation during development"
+  
+  - pattern: "Programmatic validation"
+    code: |
+      const { validateFile } = require('llm-yml');
+      const isValid = validateFile('./LLM.yml');
+    when_to_use: "To integrate validation into build scripts or tools"
+
+api_essentials:
+  main_class: LLMYmlValidator
+  key_methods:
+    - validateFile(filePath)
+    - validateData(data)
+    - findLLMFiles(directory, recursive)
+  instantiation: |
+    const { LLMYmlValidator } = require('llm-yml');
+    const validator = new LLMYmlValidator(schema);
+
+decision_tree:
+  what_task:
+    create_documentation:
+      use: "Create an LLM.yml file following the specification"
+      example: "See examples/minimal/hello-world-llm.yml for a template"
+      why: "Structured format helps AI assistants understand your library"
+    
+    validate_documentation:
+      use: "Use the CLI validator: llm-yml validate"
+      example: "llm-yml validate ./LLM.yml"
+      why: "Ensures your documentation follows the specification"
+    
+    integrate_validation:
+      use: "Add validation to CI/CD with GitHub Actions"
+      example: "See .github/workflows/validate.yml"
+      why: "Automatically catch documentation issues"
+    
+    programmatic_usage:
+      use: "Import the validator module"
+      example: "const { validateFile } = require('llm-yml');"
+      why: "Build custom tools or integrate with existing workflows"
+
+common_patterns:
+  - name: "Add to package.json scripts"
+    code: |
+      {
+        "scripts": {
+          "validate:llm": "llm-yml validate ./LLM.yml",
+          "validate:all": "llm-yml validate . --recursive"
+        }
+      }
+  
+  - name: "Pre-commit validation"
+    code: |
+      # In .git/hooks/pre-commit
+      #!/bin/sh
+      npm run validate:llm || exit 1
+  
+  - name: "GitHub Action validation"
+    code: |
+      - name: Validate LLM.yml
+        run: |
+          npm install -g llm-yml
+          llm-yml validate ./LLM.yml
+
+error_handling:
+  - error: "Schema Validation Failed: /library/version"
+    cause: "Version doesn't follow semantic versioning (X.Y.Z)"
+    solution: "Use format like '1.0.0', not '1.0' or 'v1.0.0'"
+  
+  - error: "YAML Parse Error"
+    cause: "Invalid YAML syntax, often indentation issues"
+    solution: "Use spaces not tabs, check quote escaping, validate YAML syntax"
+  
+  - error: "No LLM.yml files found"
+    cause: "Files don't match expected naming patterns"
+    solution: "Name files: LLM.yml, *-llm.yml, or *.llm.yml"
+  
+  - error: "Missing required property"
+    cause: "Required fields not included in the file"
+    solution: "Check specification for required fields: library, quick_usage, api_essentials"
+
+configuration_example: |
+  # Example LLM.yml for a TypeScript library
+  library:
+    name: my-typescript-lib
+    version: 2.1.0
+    purpose: Advanced data processing library
+    key_value: 10x faster than alternatives with type safety
+  
+  quick_usage:
+    - pattern: "Process data"
+      code: |
+        import { process } from 'my-typescript-lib';
+        const result = await process(data);
+      when_to_use: "For async data transformation"
+  
+  api_essentials:
+    main_class: DataProcessor
+    key_methods:
+      - process(data, options?)
+      - transform(input, rules)
+      - validate(schema)
+    instantiation: "new DataProcessor(config)"
+
+commands_summary:
+  validation:
+    - name: "validate"
+      purpose: "Validate LLM.yml files"
+      key_flags: ["--recursive", "--quiet", "--no-best-practices"]
+    - name: "--help"
+      purpose: "Show help message"
+      key_flags: []
+    - name: "--version"
+      purpose: "Show validator version"
+      key_flags: []
+
+flags_reference:
+  validation_flags:
+    --recursive:
+      effect: "Search directories recursively"
+      use_for: "validating entire projects"
+    --quiet:
+      effect: "Only show errors, suppress warnings"
+      use_for: "CI/CD pipelines"
+    --no-best-practices:
+      effect: "Skip best practice checks"
+      use_for: "schema-only validation"
+
+integration_tips:
+  - tip: "Add badge to README"
+    example: "[![LLM.yml](https://img.shields.io/badge/LLM.yml-v1.0.0-blue)](./LLM.yml)"
+  
+  - tip: "Link from main documentation"
+    example: "See [LLM.yml](./LLM.yml) for AI-optimized documentation"
+  
+  - tip: "Include in npm package"
+    example: "Ensure LLM.yml is not in .npmignore"
+
+dependencies:
+  required:
+    - "js-yaml": "^4.1.0"
+    - "ajv": "^8.0.0"
+  
+  peer:
+    - "node": ">=14.0.0"

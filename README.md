@@ -4,6 +4,8 @@
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 [![Contributing](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
 
+> 📄 **[View this project's LLM.yml](./LLM.yml)** - AI-optimized documentation for using this project
+
 ## What is LLM.yml?
 
 LLM.yml is a standardized format for documenting code libraries and APIs specifically optimized for AI assistants and language models. Unlike traditional documentation written for human developers, LLM.yml provides structured, parseable information that helps AI assistants understand and use your code more effectively.
@@ -123,6 +125,20 @@ See the [Validator README](./validator/README.md) for detailed usage instruction
 - **Issues**: [GitHub Issues](https://github.com/llm-yml/llm-yml/issues)
 - **Twitter**: [@llmyml](https://twitter.com/llmyml)
 
+## Best Practices
+
+1. **Link to LLM.yml from your README** - Add a prominent link at the top of your README so AI assistants can find it immediately:
+   ```markdown
+   > 📄 **[View LLM.yml](./LLM.yml)** - AI-optimized documentation
+   ```
+
+2. **Use the LLM.yml badge** - Show that your project supports the standard:
+   ```markdown
+   [![LLM.yml](https://img.shields.io/badge/LLM.yml-v1.0.0-blue)](./LLM.yml)
+   ```
+
+3. **Keep it updated** - Update your LLM.yml when you add new features or change APIs
+
 ## Contributing
 
 We welcome contributions! See our [Contributing Guide](./CONTRIBUTING.md) for:
@@ -146,7 +162,8 @@ We welcome contributions! See our [Contributing Guide](./CONTRIBUTING.md) for:
 
 ## Projects Using LLM.yml
 
-- [SuperClaude SDK Wrapper](https://github.com/example/superclaude-sdk-wrapper)
+- [LLM.yml](https://github.com/llm-yml/llm-yml) - This project! ([View LLM.yml](./LLM.yml))
+- [Claude Code SDK TypeScript](https://github.com/instantlyeasy/claude-code-sdk-ts/blob/beta/v0.3.0-enhanced-features/LLM.yml)
 - [Your Project Here] - [Submit a PR](./CONTRIBUTING.md)
 
 ## FAQ
