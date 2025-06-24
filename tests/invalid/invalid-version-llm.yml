@@ -1,0 +1,17 @@
+# Invalid: Version doesn't follow semver
+library:
+  name: invalid-version-lib
+  version: "1.0"  # Invalid - must be X.Y.Z
+  purpose: Test invalid version format
+  key_value: Testing version validation
+
+quick_usage:
+  - pattern: "Test"
+    code: "test()"
+    when_to_use: "Testing"
+
+api_essentials:
+  main_class: Test
+  key_methods:
+    - test()
+  instantiation: "new Test()"

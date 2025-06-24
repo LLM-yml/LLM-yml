@@ -1,0 +1,361 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://llm-yml.org/schema/v1.0.0/llm-yml-schema.json",
+  "title": "LLM.yml Schema",
+  "description": "Schema for LLM.yml files - AI-friendly library documentation",
+  "type": "object",
+  "required": ["library", "quick_usage", "api_essentials"],
+  "additionalProperties": false,
+  "properties": {
+    "library": {
+      "type": "object",
+      "description": "Basic library information",
+      "required": ["name", "version", "purpose", "key_value"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Package/library name",
+          "pattern": "^[a-z0-9-_@/]+$"
+        },
+        "version": {
+          "type": "string",
+          "description": "Current version (semver)",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9-.]+)?(\\+[a-zA-Z0-9-.]+)?$"
+        },
+        "purpose": {
+          "type": "string",
+          "description": "One-line description",
+          "maxLength": 100
+        },
+        "key_value": {
+          "type": "string",
+          "description": "Why use this library",
+          "maxLength": 100
+        }
+      }
+    },
+    "quick_usage": {
+      "type": "array",
+      "description": "Basic usage examples",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["pattern", "code", "when_to_use"],
+        "additionalProperties": false,
+        "properties": {
+          "pattern": {
+            "type": "string",
+            "description": "Pattern name",
+            "maxLength": 50
+          },
+          "code": {
+            "type": "string",
+            "description": "Working code example"
+          },
+          "when_to_use": {
+            "type": "string",
+            "description": "When to apply this pattern",
+            "maxLength": 100
+          }
+        }
+      }
+    },
+    "api_essentials": {
+      "type": "object",
+      "description": "Core API elements",
+      "required": ["main_class", "key_methods", "instantiation"],
+      "additionalProperties": false,
+      "properties": {
+        "main_class": {
+          "type": "string",
+          "description": "Primary class/function/module"
+        },
+        "key_methods": {
+          "type": "array",
+          "description": "Most important methods/functions",
+          "items": {
+            "type": "string"
+          }
+        },
+        "instantiation": {
+          "type": "string",
+          "description": "How to create/initialize"
+        }
+      }
+    },
+    "decision_tree": {
+      "type": "object",
+      "description": "Hierarchical decision structure",
+      "patternProperties": {
+        "^[a-zA-Z_][a-zA-Z0-9_]*$": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z_][a-zA-Z0-9_]*$": {
+              "type": "object",
+              "required": ["use", "why"],
+              "properties": {
+                "use": {
+                  "type": "string"
+                },
+                "example": {
+                  "type": "string"
+                },
+                "why": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "common_patterns": {
+      "type": "array",
+      "description": "Frequently used code patterns",
+      "items": {
+        "type": "object",
+        "required": ["name", "code"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Pattern name"
+          },
+          "code": {
+            "type": "string",
+            "description": "Complete working example"
+          },
+          "description": {
+            "type": "string",
+            "description": "What this pattern does"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "error_handling": {
+      "type": "array",
+      "description": "Common errors and solutions",
+      "items": {
+        "type": "object",
+        "required": ["error", "cause", "solution"],
+        "additionalProperties": false,
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error message or type"
+          },
+          "cause": {
+            "type": "string",
+            "description": "Why this happens"
+          },
+          "solution": {
+            "type": "string",
+            "description": "How to fix it"
+          },
+          "example": {
+            "type": "string",
+            "description": "Code example"
+          }
+        }
+      }
+    },
+    "configuration": {
+      "type": "object",
+      "description": "Configuration examples",
+      "properties": {
+        "minimal": {
+          "type": "string"
+        },
+        "recommended": {
+          "type": "string"
+        },
+        "advanced": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "dependencies": {
+      "type": "object",
+      "description": "Required and optional dependencies",
+      "additionalProperties": false,
+      "properties": {
+        "required": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "patternProperties": {
+                  "^[a-z0-9-_@/]+$": {
+                    "type": "string"
+                  }
+                },
+                "maxProperties": 1
+              }
+            ]
+          }
+        },
+        "optional": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "patternProperties": {
+                  "^[a-z0-9-_@/]+$": {
+                    "type": "string"
+                  }
+                },
+                "maxProperties": 1
+              }
+            ]
+          }
+        },
+        "peer": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "patternProperties": {
+                  "^[a-z0-9-_@/]+$": {
+                    "type": "string"
+                  }
+                },
+                "maxProperties": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    "flags_reference": {
+      "type": "object",
+      "description": "Command-line flags or options",
+      "patternProperties": {
+        "^[a-zA-Z_][a-zA-Z0-9_]*$": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z_-][a-zA-Z0-9_-]*$": {
+              "type": "object",
+              "required": ["effect", "use_for"],
+              "properties": {
+                "effect": {
+                  "type": "string"
+                },
+                "default": {
+                  "description": "Default value"
+                },
+                "use_for": {
+                  "type": "string"
+                },
+                "tokens": {
+                  "type": "number"
+                },
+                "enables": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "integration_tips": {
+      "type": "array",
+      "description": "Quick integration tips",
+      "items": {
+        "type": "object",
+        "required": ["tip"],
+        "additionalProperties": false,
+        "properties": {
+          "scenario": {
+            "type": "string"
+          },
+          "tip": {
+            "type": "string"
+          },
+          "example": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "personas_summary": {
+      "type": "object",
+      "description": "Available personas (for AI assistant libraries)",
+      "patternProperties": {
+        "^[a-zA-Z_][a-zA-Z0-9_]*$": {
+          "type": "object",
+          "required": ["speciality", "best_for"],
+          "properties": {
+            "speciality": {
+              "type": "string"
+            },
+            "model": {
+              "type": "string"
+            },
+            "risk": {
+              "type": "string",
+              "enum": ["low", "medium", "high"]
+            },
+            "best_for": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "commands_summary": {
+      "type": "object",
+      "description": "Available commands (for CLI tools)",
+      "patternProperties": {
+        "^[a-zA-Z_][a-zA-Z0-9_]*$": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "purpose"],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "purpose": {
+                "type": "string"
+              },
+              "key_flags": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "configuration_example": {
+      "type": "string",
+      "description": "Example configuration file"
+    }
+  }
+}

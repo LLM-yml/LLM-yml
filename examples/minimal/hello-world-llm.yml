@@ -1,0 +1,23 @@
+# Minimal Valid LLM.yml Example
+# This demonstrates the absolute minimum required fields
+
+library:
+  name: hello-world
+  version: 1.0.0
+  purpose: Minimal example demonstrating required LLM.yml fields
+  key_value: Shows the bare minimum needed for a valid LLM.yml file
+
+quick_usage:
+  - pattern: "Basic usage"
+    code: |
+      const hello = require('hello-world');
+      hello.greet('World');
+      // Output: Hello, World!
+    when_to_use: "When you need a simple greeting"
+
+api_essentials:
+  main_class: HelloWorld
+  key_methods:
+    - greet(name)
+    - sayGoodbye(name)
+  instantiation: "const hello = require('hello-world')"

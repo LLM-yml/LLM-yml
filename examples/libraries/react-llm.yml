@@ -1,0 +1,220 @@
+# React LLM Documentation Example
+library:
+  name: react
+  version: 18.2.0
+  purpose: JavaScript library for building user interfaces
+  key_value: Component-based UI with efficient updates and JSX syntax
+
+quick_usage:
+  - pattern: "Function component"
+    code: |
+      import React from 'react';
+      
+      function App() {
+        return <h1>Hello, World!</h1>;
+      }
+      
+      export default App;
+    when_to_use: "Creating simple stateless components"
+
+  - pattern: "Component with state"
+    code: |
+      import React, { useState } from 'react';
+      
+      function Counter() {
+        const [count, setCount] = useState(0);
+        
+        return (
+          <div>
+            <p>Count: {count}</p>
+            <button onClick={() => setCount(count + 1)}>
+              Increment
+            </button>
+          </div>
+        );
+      }
+    when_to_use: "Managing component-local state"
+
+  - pattern: "Effect hook"
+    code: |
+      import React, { useState, useEffect } from 'react';
+      
+      function User({ userId }) {
+        const [user, setUser] = useState(null);
+        
+        useEffect(() => {
+          fetch(`/api/users/${userId}`)
+            .then(res => res.json())
+            .then(setUser);
+        }, [userId]);
+        
+        return <div>{user?.name}</div>;
+      }
+    when_to_use: "Fetching data or side effects"
+
+api_essentials:
+  main_class: React.Component / Function
+  key_methods:
+    - useState(initialValue)
+    - useEffect(callback, dependencies)
+    - useContext(Context)
+    - useMemo(callback, dependencies)
+    - useCallback(callback, dependencies)
+    - useReducer(reducer, initialState)
+    - useRef(initialValue)
+  instantiation: "function Component() { return <jsx /> }"
+
+decision_tree:
+  state_management:
+    local_state:
+      use: "useState hook"
+      example: "const [value, setValue] = useState(0)"
+      why: "Simple component-only state"
+    complex_state:
+      use: "useReducer hook"
+      example: "const [state, dispatch] = useReducer(reducer, initialState)"
+      why: "Complex state logic"
+    global_state:
+      use: "Context API or Redux"
+      example: "const value = useContext(MyContext)"
+      why: "Share state across components"
+  
+  component_type:
+    presentational:
+      use: "Function component"
+      example: "function Card({ title }) { return <div>{title}</div> }"
+      why: "Simple, stateless UI"
+    container:
+      use: "Function with hooks"
+      example: "function UserList() { const [users] = useState([]) ... }"
+      why: "Business logic and state"
+    
+  performance:
+    memo_component:
+      use: "React.memo"
+      example: "export default React.memo(ExpensiveComponent)"
+      why: "Prevent unnecessary re-renders"
+    memo_value:
+      use: "useMemo"
+      example: "const expensive = useMemo(() => compute(a, b), [a, b])"
+      why: "Cache expensive computations"
+
+common_patterns:
+  - name: "Conditional rendering"
+    code: |
+      function Alert({ show, message }) {
+        return show ? <div className="alert">{message}</div> : null;
+      }
+      
+      // Or using &&
+      return show && <div className="alert">{message}</div>;
+    description: "Render components conditionally"
+
+  - name: "List rendering"
+    code: |
+      function TodoList({ todos }) {
+        return (
+          <ul>
+            {todos.map(todo => (
+              <li key={todo.id}>{todo.text}</li>
+            ))}
+          </ul>
+        );
+      }
+    description: "Render arrays of elements with keys"
+
+  - name: "Form handling"
+    code: |
+      function Form() {
+        const [value, setValue] = useState('');
+        
+        const handleSubmit = (e) => {
+          e.preventDefault();
+          console.log('Submitted:', value);
+        };
+        
+        return (
+          <form onSubmit={handleSubmit}>
+            <input 
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+            />
+            <button type="submit">Submit</button>
+          </form>
+        );
+      }
+    description: "Controlled form inputs"
+
+error_handling:
+  - error: "Objects are not valid as a React child"
+    cause: "Rendering object directly"
+    solution: "Render object properties"
+    example: |
+      // Wrong
+      return <div>{user}</div>;
+      
+      // Correct
+      return <div>{user.name}</div>;
+
+  - error: "Cannot update during an existing state transition"
+    cause: "Calling setState in render"
+    solution: "Use useEffect or event handlers"
+    example: |
+      // Wrong
+      function Bad() {
+        const [x, setX] = useState(0);
+        setX(1); // Error!
+        return <div>{x}</div>;
+      }
+      
+      // Correct
+      useEffect(() => {
+        setX(1);
+      }, []);
+
+  - error: "Missing dependency warning"
+    cause: "useEffect missing dependencies"
+    solution: "Include all used variables"
+
+dependencies:
+  required:
+    - react: "^18.0.0"
+    - react-dom: "^18.0.0"
+  optional:
+    - react-router-dom: "^6.0.0"
+    - axios: "^1.0.0"
+    - styled-components: "^5.0.0"
+  peer:
+    - node: ">=14.0.0"
+
+configuration:
+  minimal: |
+    import React from 'react';
+    import ReactDOM from 'react-dom/client';
+    
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  
+  recommended: |
+    import React from 'react';
+    import ReactDOM from 'react-dom/client';
+    
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    );
+
+integration_tips:
+  - scenario: "TypeScript with React"
+    tip: "Use .tsx extension and type props"
+    example: "interface Props { name: string }"
+  
+  - scenario: "Testing React components"
+    tip: "Use React Testing Library"
+    example: "render(<Component />); expect(screen.getByText('Hello')).toBeInTheDocument()"
+  
+  - scenario: "State management"
+    tip: "Start with Context, upgrade to Redux if needed"
+    example: "const ThemeContext = React.createContext()"

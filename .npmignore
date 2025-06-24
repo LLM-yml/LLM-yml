@@ -1,0 +1,43 @@
+# Files and directories to exclude from npm package
+
+# GitHub
+.github/
+.git/
+
+# Development files
+.editorconfig
+.eslintrc*
+.prettierrc*
+
+# Test files
+tests/
+validator/tests/
+**/*.test.js
+**/*.spec.js
+jest.config.js
+coverage/
+
+# Documentation (keep spec)
+docs/
+examples/
+CONTRIBUTING.md
+CHANGELOG.md
+
+# Build artifacts
+*.log
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Keep only production files
+# The npm package should include:
+# - package.json
+# - README.md
+# - LICENSE
+# - validator/
+# - spec/
+# - schema/ (for backwards compatibility)

@@ -1,0 +1,17 @@
+# Invalid: Missing required 'key_value' field
+library:
+  name: invalid-lib
+  version: 1.0.0
+  purpose: Test invalid file
+  # Missing: key_value
+
+quick_usage:
+  - pattern: "Test"
+    code: "test()"
+    when_to_use: "Testing"
+
+api_essentials:
+  main_class: Test
+  key_methods:
+    - test()
+  instantiation: "new Test()"

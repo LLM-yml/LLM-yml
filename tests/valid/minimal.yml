@@ -1,0 +1,19 @@
+# Minimal valid LLM.yml for testing
+library:
+  name: test-lib
+  version: 1.0.0
+  purpose: Test library for validation
+  key_value: Shows minimal valid structure
+
+quick_usage:
+  - pattern: "Basic test"
+    code: |
+      const test = require('test-lib');
+      test.run();
+    when_to_use: "For testing validation"
+
+api_essentials:
+  main_class: TestLib
+  key_methods:
+    - run()
+  instantiation: "require('test-lib')"

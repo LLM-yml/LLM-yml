@@ -1,0 +1,218 @@
+# FastAPI LLM Documentation Example
+library:
+  name: fastapi
+  version: 0.104.1
+  purpose: Modern, fast web framework for building APIs with Python
+  key_value: Automatic API docs, type hints, async support, high performance
+
+quick_usage:
+  - pattern: "Basic API"
+    code: |
+      from fastapi import FastAPI
+      
+      app = FastAPI()
+      
+      @app.get("/")
+      def read_root():
+          return {"Hello": "World"}
+      
+      # Run with: uvicorn main:app --reload
+    when_to_use: "Creating a simple REST API"
+
+  - pattern: "Path parameters"
+    code: |
+      from fastapi import FastAPI
+      
+      app = FastAPI()
+      
+      @app.get("/items/{item_id}")
+      def read_item(item_id: int, q: str = None):
+          return {"item_id": item_id, "q": q}
+    when_to_use: "API endpoints with URL parameters"
+
+  - pattern: "Request body with Pydantic"
+    code: |
+      from fastapi import FastAPI
+      from pydantic import BaseModel
+      
+      app = FastAPI()
+      
+      class Item(BaseModel):
+          name: str
+          price: float
+          is_offer: bool = False
+      
+      @app.post("/items/")
+      def create_item(item: Item):
+          return {"item_name": item.name, "total": item.price * 1.1}
+    when_to_use: "Handling JSON request bodies with validation"
+
+api_essentials:
+  main_class: FastAPI
+  key_methods:
+    - "@app.get(path)"
+    - "@app.post(path)"
+    - "@app.put(path)"
+    - "@app.delete(path)"
+    - "FastAPI(title, version, description)"
+    - "Depends(dependency)"
+    - "HTTPException(status_code, detail)"
+  instantiation: "app = FastAPI()"
+
+decision_tree:
+  api_style:
+    rest_api:
+      use: "FastAPI decorators"
+      example: "@app.get('/users/{user_id}')"
+      why: "RESTful conventions with OpenAPI"
+    graphql:
+      use: "FastAPI + Strawberry/Graphene"
+      example: "app.include_router(graphql_app, prefix='/graphql')"
+      why: "GraphQL integration"
+    websocket:
+      use: "@app.websocket"
+      example: "@app.websocket('/ws')"
+      why: "Real-time bidirectional communication"
+  
+  authentication:
+    jwt:
+      use: "FastAPI security + python-jose"
+      example: "oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token')"
+      why: "Standard OAuth2 with JWT"
+    api_key:
+      use: "Header/Query security"
+      example: "api_key = Header(..., alias='X-API-Key')"
+      why: "Simple API key authentication"
+  
+  database:
+    sql:
+      use: "FastAPI + SQLAlchemy"
+      example: "Depends(get_db)"
+      why: "Traditional SQL databases"
+    nosql:
+      use: "FastAPI + Motor/Beanie"
+      example: "await collection.insert_one(item.dict())"
+      why: "MongoDB async support"
+
+common_patterns:
+  - name: "Dependency injection"
+    code: |
+      from fastapi import Depends
+      
+      def get_current_user(token: str = Header(...)):
+          # Verify token
+          return {"user_id": "123"}
+      
+      @app.get("/users/me")
+      def read_users_me(current_user: dict = Depends(get_current_user)):
+          return current_user
+    description: "Reusable dependencies for auth, DB, etc."
+
+  - name: "Background tasks"
+    code: |
+      from fastapi import BackgroundTasks
+      
+      def send_email(email: str, message: str):
+          # Send email logic
+          pass
+      
+      @app.post("/send-notification/")
+      def send_notification(
+          email: str,
+          background_tasks: BackgroundTasks
+      ):
+          background_tasks.add_task(send_email, email, "Notification")
+          return {"message": "Notification sent"}
+    description: "Run tasks after returning response"
+
+  - name: "CORS configuration"
+    code: |
+      from fastapi.middleware.cors import CORSMiddleware
+      
+      app.add_middleware(
+          CORSMiddleware,
+          allow_origins=["http://localhost:3000"],
+          allow_credentials=True,
+          allow_methods=["*"],
+          allow_headers=["*"],
+      )
+    description: "Enable cross-origin requests"
+
+error_handling:
+  - error: "422 Unprocessable Entity"
+    cause: "Request validation failed"
+    solution: "Check request body matches Pydantic model"
+    example: |
+      # Model expects these fields
+      class Item(BaseModel):
+          name: str
+          price: float
+
+  - error: "ImportError: No module named 'pydantic'"
+    cause: "Missing dependency"
+    solution: "Install FastAPI with all dependencies"
+    example: "pip install 'fastapi[all]'"
+
+  - error: "TypeError: Object of type X is not JSON serializable"
+    cause: "Returning non-serializable object"
+    solution: "Use Pydantic models or dict"
+
+dependencies:
+  required:
+    - fastapi: ">=0.100.0"
+    - pydantic: ">=2.0"
+  optional:
+    - uvicorn: ">=0.23.0"
+    - python-multipart: ">=0.0.6"
+    - python-jose: ">=3.3.0"
+    - passlib: ">=1.7.4"
+    - sqlalchemy: ">=2.0.0"
+  peer:
+    - python: ">=3.8"
+
+configuration:
+  minimal: |
+    from fastapi import FastAPI
+    
+    app = FastAPI()
+  
+  recommended: |
+    from fastapi import FastAPI
+    from fastapi.middleware.cors import CORSMiddleware
+    
+    app = FastAPI(
+        title="My API",
+        version="1.0.0",
+        description="API description",
+        docs_url="/docs",
+        redoc_url="/redoc"
+    )
+    
+    # CORS
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+    
+    # Exception handlers
+    @app.exception_handler(ValueError)
+    async def value_error_handler(request, exc):
+        return JSONResponse(
+            status_code=400,
+            content={"detail": str(exc)}
+        )
+
+integration_tips:
+  - scenario: "Running in production"
+    tip: "Use Gunicorn with Uvicorn workers"
+    example: "gunicorn main:app -w 4 -k uvicorn.workers.UvicornWorker"
+  
+  - scenario: "Testing FastAPI apps"
+    tip: "Use TestClient from fastapi.testclient"
+    example: "response = client.get('/'); assert response.status_code == 200"
+  
+  - scenario: "Async database operations"
+    tip: "Use async SQLAlchemy or Motor for MongoDB"
+    example: "async with AsyncSession(engine) as session:"

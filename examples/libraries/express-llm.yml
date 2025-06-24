@@ -1,0 +1,185 @@
+# Express.js LLM Documentation Example
+library:
+  name: express
+  version: 4.18.2
+  purpose: Fast, unopinionated, minimalist web framework for Node.js
+  key_value: Production-ready HTTP server with middleware ecosystem
+
+quick_usage:
+  - pattern: "Basic HTTP server"
+    code: |
+      const express = require('express');
+      const app = express();
+      
+      app.get('/', (req, res) => {
+        res.send('Hello World!');
+      });
+      
+      app.listen(3000, () => {
+        console.log('Server running on port 3000');
+      });
+    when_to_use: "Creating a simple web server"
+
+  - pattern: "REST API with JSON"
+    code: |
+      const express = require('express');
+      const app = express();
+      
+      app.use(express.json());
+      
+      app.post('/api/users', (req, res) => {
+        const user = req.body;
+        res.status(201).json({ id: 123, ...user });
+      });
+      
+      app.listen(3000);
+    when_to_use: "Building REST APIs with JSON payloads"
+
+  - pattern: "Static file serving"
+    code: |
+      const express = require('express');
+      const app = express();
+      
+      app.use(express.static('public'));
+      
+      app.listen(3000);
+    when_to_use: "Serving static files like HTML, CSS, images"
+
+api_essentials:
+  main_class: express.Application
+  key_methods:
+    - app.get(path, ...handlers)
+    - app.post(path, ...handlers)
+    - app.put(path, ...handlers)
+    - app.delete(path, ...handlers)
+    - app.use([path], middleware)
+    - app.listen(port, [callback])
+    - app.set(setting, value)
+  instantiation: "const app = express()"
+
+decision_tree:
+  api_type:
+    rest_api:
+      use: "express + express.json()"
+      example: "app.use(express.json())"
+      why: "Built-in JSON parsing"
+    graphql:
+      use: "express + apollo-server-express"
+      example: "await server.start(); server.applyMiddleware({ app })"
+      why: "GraphQL integration"
+    websocket:
+      use: "express + socket.io"
+      example: "const io = require('socket.io')(server)"
+      why: "Real-time communication"
+  
+  authentication:
+    jwt:
+      use: "express + jsonwebtoken + express-jwt"
+      example: "app.use(jwt({ secret: 'secret', algorithms: ['HS256'] }))"
+      why: "Stateless authentication"
+    session:
+      use: "express + express-session"
+      example: "app.use(session({ secret: 'secret' }))"
+      why: "Stateful authentication"
+
+common_patterns:
+  - name: "Error handling middleware"
+    code: |
+      app.use((err, req, res, next) => {
+        console.error(err.stack);
+        res.status(err.status || 500).json({
+          error: err.message || 'Internal Server Error'
+        });
+      });
+    description: "Global error handler - must be last middleware"
+
+  - name: "CORS configuration"
+    code: |
+      const cors = require('cors');
+      
+      app.use(cors({
+        origin: 'http://localhost:3001',
+        credentials: true
+      }));
+    description: "Enable cross-origin requests"
+
+  - name: "Request logging"
+    code: |
+      const morgan = require('morgan');
+      
+      app.use(morgan('combined'));
+    description: "Log HTTP requests for debugging"
+
+error_handling:
+  - error: "Cannot set headers after they are sent"
+    cause: "Sending multiple responses"
+    solution: "Return after sending response"
+    example: |
+      // Wrong
+      res.send('Hello');
+      res.send('World'); // Error!
+      
+      // Correct
+      res.send('Hello');
+      return;
+
+  - error: "Middleware not working"
+    cause: "Incorrect middleware order"
+    solution: "Place middleware before routes"
+    example: |
+      // Correct order
+      app.use(express.json()); // First
+      app.post('/api', handler); // After
+
+  - error: "Route not found"
+    cause: "Route defined after catch-all"
+    solution: "Define specific routes first"
+
+dependencies:
+  required:
+    - express: "^4.18.0"
+  optional:
+    - cors: "^2.8.5"
+    - helmet: "^7.0.0"
+    - compression: "^1.7.4"
+    - morgan: "^1.10.0"
+  peer:
+    - node: ">=14.0.0"
+
+configuration:
+  minimal: |
+    const app = express();
+    app.listen(3000);
+  
+  recommended: |
+    const app = express();
+    
+    // Security
+    app.use(helmet());
+    
+    // Body parsing
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
+    
+    // Compression
+    app.use(compression());
+    
+    // Error handling
+    app.use((err, req, res, next) => {
+      res.status(500).json({ error: err.message });
+    });
+    
+    app.listen(3000);
+
+integration_tips:
+  - scenario: "TypeScript usage"
+    tip: "Use @types/express for type definitions"
+    example: "npm install --save-dev @types/express"
+  
+  - scenario: "Testing Express apps"
+    tip: "Use supertest for HTTP assertions"
+    example: "const response = await request(app).get('/').expect(200)"
+  
+  - scenario: "Production deployment"
+    tip: "Use process manager like PM2"
+    example: "pm2 start app.js"

@@ -1,0 +1,281 @@
+# SuperClaude SDK Wrapper LLM Documentation
+library:
+  name: superclaude-sdk-wrapper
+  version: 1.0.0
+  purpose: Bridge SuperClaude configuration system with Claude Code SDK Fluent API
+  key_value: Combines declarative configuration simplicity with programmatic flexibility
+
+quick_usage:
+  - pattern: "Execute with persona"
+    code: |
+      const wrapper = new SuperClaudeSDKWrapper();
+      const result = await wrapper.executeWithPersona('architect', 'Design a system');
+    when_to_use: "When you need specialized expertise for a specific domain"
+  
+  - pattern: "Execute command with flags"
+    code: |
+      const result = await wrapper.executeCommand(
+        '/user:analyze',
+        'Analyze code quality',
+        ['--think-hard', '--metrics']
+      );
+    when_to_use: "When you need a predefined workflow with modifiers"
+  
+  - pattern: "Custom query builder"
+    code: |
+      const builder = wrapper.createQueryBuilder({
+        persona: 'frontend',
+        command: '/user:improve',
+        flags: ['--think', '--interactive']
+      });
+      const result = await builder.query('Improve UI').asText();
+    when_to_use: "When you need fine-grained control over the interaction"
+
+api_essentials:
+  main_class: SuperClaudeSDKWrapper
+  key_methods:
+    - executeWithPersona(persona, prompt)
+    - executeCommand(command, prompt, flags)
+    - createQueryBuilder(options)
+    - loadConfiguration(path)
+    - getAvailablePersonas()
+    - getAvailableCommands()
+  instantiation: "const wrapper = new SuperClaudeSDKWrapper()"
+
+decision_tree:
+  what_task:
+    system_design:
+      use: "persona: architect, command: /user:design"
+      example: "wrapper.executeWithPersona('architect', 'Design system')"
+      why: "Opus model with holistic thinking for complex designs"
+    
+    bug_fixing:
+      use: "persona: analyzer, command: /user:troubleshoot"
+      example: "wrapper.executeCommand('/user:troubleshoot', 'Debug issue', ['--ultrathink'])"
+      why: "Root cause analysis with sequential thinking"
+    
+    security_audit:
+      use: "persona: security, command: /user:scan"
+      example: "wrapper.executeCommand('/user:scan', 'Audit security', ['--think-hard', '--c7'])"
+      why: "Security-focused with documentation lookup"
+    
+    ui_development:
+      use: "persona: frontend, command: /user:build"
+      example: "wrapper.executeWithPersona('frontend', 'Build UI')"
+      why: "User-centric approach with visual tools"
+    
+    code_improvement:
+      use: "persona: refactorer, command: /user:improve"
+      example: "wrapper.executeCommand('/user:improve', 'Refactor code', ['--metrics'])"
+      why: "Focus on simplification and metrics"
+    
+    testing:
+      use: "persona: qa, command: /user:test"
+      example: "wrapper.executeCommand('/user:test', 'Write tests', ['--coverage'])"
+      why: "Thorough testing with coverage focus"
+
+personas_summary:
+  architect:
+    speciality: "System design and architecture"
+    model: opus
+    risk: low
+    best_for: ["system design", "technology decisions", "scalability planning"]
+  
+  frontend:
+    speciality: "UI/UX development"
+    model: sonnet
+    risk: medium
+    best_for: ["UI components", "user experience", "responsive design"]
+  
+  backend:
+    speciality: "Server-side development"
+    model: opus
+    risk: low
+    best_for: ["API development", "database design", "infrastructure"]
+  
+  analyzer:
+    speciality: "Root cause analysis"
+    model: opus
+    risk: low
+    best_for: ["debugging", "performance analysis", "code review"]
+  
+  security:
+    speciality: "Security and threat modeling"
+    model: opus
+    risk: low
+    best_for: ["vulnerability scanning", "threat modeling", "security audit"]
+  
+  mentor:
+    speciality: "Teaching and documentation"
+    model: sonnet
+    risk: medium
+    best_for: ["explanations", "tutorials", "documentation"]
+  
+  refactorer:
+    speciality: "Code quality improvement"
+    model: sonnet
+    risk: medium
+    best_for: ["code cleanup", "simplification", "pattern extraction"]
+  
+  performance:
+    speciality: "Performance optimization"
+    model: sonnet
+    risk: medium
+    best_for: ["bottleneck analysis", "optimization", "profiling"]
+  
+  qa:
+    speciality: "Quality assurance"
+    model: opus
+    risk: low
+    best_for: ["test creation", "edge case finding", "test planning"]
+
+commands_summary:
+  development:
+    - name: /user:build
+      purpose: "Build projects"
+      key_flags: ['--watch', '--dry-run']
+    - name: /user:test
+      purpose: "Run tests"
+      key_flags: ['--coverage', '--watch']
+    - name: /user:improve
+      purpose: "Enhance code"
+      key_flags: ['--metrics', '--interactive']
+  
+  analysis:
+    - name: /user:analyze
+      purpose: "Deep code analysis"
+      key_flags: ['--think-hard', '--metrics', '--c7']
+    - name: /user:troubleshoot
+      purpose: "Debug issues"
+      key_flags: ['--ultrathink', '--seq', '--interactive']
+    - name: /user:explain
+      purpose: "Explain concepts/code"
+      key_flags: ['--think-hard', '--c7', '--interactive']
+  
+  operations:
+    - name: /user:deploy
+      purpose: "Deploy applications"
+      key_flags: ['--dry-run', '--plan']
+    - name: /user:migrate
+      purpose: "Run migrations"
+      key_flags: ['--dry-run', '--plan']
+    - name: /user:scan
+      purpose: "Security scanning"
+      key_flags: ['--think-hard', '--c7']
+
+flags_reference:
+  thinking_depth:
+    --think:
+      effect: "Standard analysis mode"
+      tokens: 4000
+      use_for: "standard analysis"
+    --think-hard:
+      effect: "Deep analysis mode"
+      tokens: 10000
+      use_for: "complex problems"
+    --ultrathink:
+      effect: "Maximum analysis depth"
+      tokens: 32000
+      use_for: "critical decisions"
+  
+  mcp_servers:
+    --c7:
+      effect: "Enable Context7 MCP server"
+      enables: "documentation lookup"
+      use_for: "learning, specifications"
+    --seq:
+      effect: "Enable sequential thinking server"
+      enables: "sequential thinking"
+      use_for: "complex multi-step problems"
+    --magic:
+      effect: "Enable Magic UI server"
+      enables: "UI components"
+      use_for: "visual development"
+    --pup:
+      effect: "Enable Puppeteer server"
+      enables: "browser automation"
+      use_for: "E2E testing, scraping"
+  
+  control:
+    --plan:
+      effect: "shows execution plan"
+      use_for: "preview before execution"
+    --dry-run:
+      effect: "simulates without changes"
+      use_for: "safe testing"
+    --watch:
+      effect: "continuous mode"
+      use_for: "development workflows"
+    --interactive:
+      effect: "step-by-step guidance"
+      use_for: "learning, debugging"
+
+common_patterns:
+  - name: "Security audit workflow"
+    code: |
+      const audit = await wrapper.createQueryBuilder({
+        persona: 'security',
+        command: '/user:scan',
+        flags: ['--ultrathink', '--c7']
+      }).query('Audit authentication system').asText();
+  
+  - name: "Development with testing"
+    code: |
+      const dev = await wrapper.executeCommand('/user:build', 'Build feature', ['--think']);
+      const test = await wrapper.executeCommand('/user:test', 'Test feature', ['--coverage']);
+  
+  - name: "Performance optimization"
+    code: |
+      const analysis = await wrapper.executeWithPersona('analyzer', 'Find bottlenecks');
+      const optimized = await wrapper.executeWithPersona('performance', 'Optimize based on: ' + analysis);
+
+error_handling:
+  - error: "Unknown persona: {name}"
+    cause: "Persona name not found in available personas"
+    solution: "Check available personas with wrapper.getAvailablePersonas()"
+  
+  - error: "Unknown command: {name}"
+    cause: "Command name not found in available commands"
+    solution: "Check available commands with wrapper.getAvailableCommands()"
+  
+  - error: "Invalid flag: {flag}"
+    cause: "Flag is not recognized or misspelled"
+    solution: "Refer to flags_reference section above"
+
+integration_tips:
+  - tip: "Use personas for consistent expertise"
+    example: "architect for design, security for audits"
+  
+  - tip: "Combine flags strategically"
+    example: "['--think-hard', '--c7'] for thorough analysis with documentation"
+  
+  - tip: "Use --dry-run for safety"
+    example: "Always dry-run deployments and migrations first"
+  
+  - tip: "Match thinking depth to complexity"
+    example: "Simple tasks: --think, Complex: --think-hard, Critical: --ultrathink"
+
+dependencies:
+  required:
+    - "@instantlyeasy/claude-code-sdk-ts": "*"
+    - "js-yaml": "^4.1.0"
+  
+  peer:
+    - "typescript": ">=5.0.0"
+
+configuration_example: |
+  # custom-config.yaml
+  personas:
+    datascientist:
+      name: datascientist
+      description: Data analysis specialist
+      coreBeliefs: ["Data drives decisions"]
+      preferredTools: [Read, Task, NotebookEdit]
+      riskTolerance: medium
+  
+  commands:
+    /user:visualize:
+      name: /user:visualize
+      description: Create visualizations
+      category: analysis
+      deliverables: ["Charts", "Insights"]

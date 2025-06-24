@@ -1,0 +1,13 @@
+# Malformed YAML file
+library:
+  name: malformed
+  version: 1.0.0
+  purpose: Test malformed YAML
+  key_value: Has syntax errors
+  invalid_indent:
+this line has bad indentation
+
+quick_usage:
+  - pattern: "Test"
+    code: "test()"
+    when_to_use: "Testing"
